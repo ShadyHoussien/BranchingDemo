@@ -8,8 +8,8 @@ namespace BranchingDemo
 {
     public interface IAccountState
     {
-        IAccountState Deposit(decimal amount);
-        IAccountState Withdraw(decimal amount);
+        IAccountState Deposit(Action addToBalance);
+        IAccountState Withdraw(Action subtractFromBalance);
         IAccountState HolderVerified();
         IAccountState Close();
         IAccountState Freeze();

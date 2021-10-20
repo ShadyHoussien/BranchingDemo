@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace BranchingDemo
 {
-    public class FrozenAccount : IAccountState
+    public class Frozen : IAccountState
     {
-        public decimal Balance { get; private set; }
         public Action OnUnFreez { get; }
 
-        public FrozenAccount(Action onUnFreez)
+        public Frozen(Action onUnFreez)
         {
             OnUnFreez = onUnFreez;
         }
@@ -20,22 +19,22 @@ namespace BranchingDemo
             return new ClosedAccount();
         }
 
-        public IAccountState Deposit(decimal amount)
+        public IAccountState Deposit(Action addToBalance)
         {
             this.OnUnFreez();
-            this.Balance += amount;
-            return new ActiveAccount(OnUnFreez);
+            addToBalance();
+            return new Active(OnUnFreez);
         }
 
         public IAccountState Freeze() => this;
 
         public IAccountState HolderVerified() => this;
 
-        public IAccountState Withdraw(decimal amount)
+        public IAccountState Withdraw(Action subtractFromBalance)
         {
             this.OnUnFreez();
-            this.Balance -= amount;
-            return new ActiveAccount(OnUnFreez);
+            subtractFromBalance();
+            return new Active(OnUnFreez);
         }
     }
 }

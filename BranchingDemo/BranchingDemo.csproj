@@ -44,10 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
-    <Compile Include="ActiveAccount.cs" />
+    <Compile Include="Active.cs" />
     <Compile Include="ClosedAccount.cs" />
-    <Compile Include="FrozenAccount.cs" />
+    <Compile Include="Frozen.cs" />
     <Compile Include="IAccountState.cs" />
+    <Compile Include="NotVerified.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

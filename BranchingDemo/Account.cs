@@ -11,16 +11,16 @@ namespace BranchingDemo
         public Account(Action onUnfreez)
         {
             this.OnUnfreez = onUnfreez;
-            this.AccountState = new FrozenAccount(OnUnfreez);
+            this.AccountState = new NotVerified(OnUnfreez);
         }
 
         public void Deposit (decimal amount)
         {
-            this.AccountState = AccountState.Deposit(amount);
+            this.AccountState = AccountState.Deposit(() => { Balance += amount; });
         }
         public void Withdraw(decimal amount)
         {
-            this.AccountState = AccountState.Withdraw(amount);
+            this.AccountState = AccountState.Withdraw(() => { Balance -= amount; });
         }
 
         public void HolderVerified()
