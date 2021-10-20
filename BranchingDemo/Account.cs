@@ -4,61 +4,36 @@ namespace BranchingDemo
 {
     class Account
     {
-        private bool IsVerified { get; set; }
-        private bool IsClosed { get; set; }
-        private bool IsFrozen { get; set; }
         public decimal Balance { get; private set; }
         private Action OnUnfreez { get; }
+        private IAccountState AccountState { get; set; }
 
         public Account(Action onUnfreez)
         {
             this.OnUnfreez = onUnfreez;
+            this.AccountState = new FrozenAccount(OnUnfreez);
         }
+
         public void Deposit (decimal amount)
         {
-            if (IsClosed)
-                return;
-            if(this.IsFrozen)
-            {
-                this.IsFrozen = false;
-                this.OnUnfreez();
-            }
-            //deposit money
-            this.Balance += amount;
+            this.AccountState = AccountState.Deposit(amount);
         }
         public void Withdraw(decimal amount)
         {
-            if (!IsVerified)
-                return;
-
-            if (IsClosed)
-                return;
-
-            if (this.IsFrozen)
-            {
-                this.IsFrozen = false;
-                this.OnUnfreez();
-            }
-            //withdraw money
-            this.Balance -= amount;
+            this.AccountState = AccountState.Withdraw(amount);
         }
 
         public void HolderVerified()
         {
-            this.IsVerified = true;
+            this.AccountState = AccountState.HolderVerified();
         }
         public void Close()
         {
-            this.IsClosed = true;
+            this.AccountState = AccountState.Close();
         }
         public void Freeze()
         {
-            if (IsClosed)
-                return;
-            if (!IsVerified)
-                return;
-
-            this.IsFrozen = true;
+            this.AccountState = AccountState.Freeze();
         }
 
     }

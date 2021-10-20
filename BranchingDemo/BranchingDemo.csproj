@@ -44,6 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="ActiveAccount.cs" />
+    <Compile Include="ClosedAccount.cs" />
+    <Compile Include="FrozenAccount.cs" />
+    <Compile Include="IAccountState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
