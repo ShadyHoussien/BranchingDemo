@@ -5,13 +5,11 @@ namespace BranchingDemo
     class Account
     {
         public decimal Balance { get; private set; }
-        private Action OnUnfreez { get; }
         private IAccountState AccountState { get; set; }
 
         public Account(Action onUnfreez)
         {
-            this.OnUnfreez = onUnfreez;
-            this.AccountState = new NotVerified(OnUnfreez);
+            this.AccountState = new NotVerified(onUnfreez);
         }
 
         public void Deposit (decimal amount)
