@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BranchingDemo
 {
-    class ClosedAccount : IAccountState
+    class Closed : IAccountState
     {
         public IAccountState Close() => this;
         public IAccountState Deposit(Action addToBalance) => this;

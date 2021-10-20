@@ -15,22 +15,13 @@ namespace BranchingDemo
             OnUnFreez = onUnFreez;
         }
 
-        public IAccountState Close()
-        {
-            return new ClosedAccount();
-        }
+        public IAccountState Close() => new Closed();
 
         public IAccountState Deposit(Action addToBalance) => this;
 
-        public IAccountState Freeze()
-        {
-            return new Frozen(OnUnFreez);
-        }
+        public IAccountState Freeze() => new Frozen(OnUnFreez);
 
-        public IAccountState HolderVerified()
-        {
-            return new Active(OnUnFreez);
-        }
+        public IAccountState HolderVerified() => new Active(OnUnFreez);
 
         public IAccountState Withdraw(Action subtractFromBalance) => this;
     }

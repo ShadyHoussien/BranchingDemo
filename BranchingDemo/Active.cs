@@ -14,10 +14,8 @@ namespace BranchingDemo
         {
             OnUnFreez = onUnFreez;
         }
-        public IAccountState Close()
-        {
-            return new ClosedAccount();
-        }
+
+        public IAccountState Close() => new Closed();
 
         public IAccountState Deposit(Action addToBalance)
         {
@@ -25,10 +23,7 @@ namespace BranchingDemo
             return this;
         }
 
-        public IAccountState Freeze()
-        {
-            return new Frozen(OnUnFreez);
-        }
+        public IAccountState Freeze() => new Frozen(OnUnFreez);
 
         public IAccountState HolderVerified() => this;
 

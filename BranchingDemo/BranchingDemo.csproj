@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="Account.cs" />
     <Compile Include="Active.cs" />
-    <Compile Include="ClosedAccount.cs" />
+    <Compile Include="Closed.cs" />
     <Compile Include="Frozen.cs" />
     <Compile Include="IAccountState.cs" />
     <Compile Include="NotVerified.cs" />
