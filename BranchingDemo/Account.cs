@@ -4,44 +4,61 @@ namespace BranchingDemo
 {
     class Account
     {
+        private bool IsVerified { get; set; }
+        private bool IsClosed { get; set; }
+        private bool IsFrozen { get; set; }
         public decimal Balance { get; private set; }
+        private Action OnUnfreez { get; }
 
-        private IAccountState State { get; set; }
-
-        public Account(Action onUnfreeze)
+        public Account(Action onUnfreez)
         {
-            this.State = new NotVerified(onUnfreeze);
+            this.OnUnfreez = onUnfreez;
         }
-
-        // #1 (Interaction): Deposit was invoked on the State
-        // #2 (Behavior): Result of State.Deposit is new State
-        // #5 (Behavior): Deposit 10, Deposit 1 - Balance == 11
-        public void Deposit(decimal amount)
+        public void Deposit (decimal amount)
         {
-            this.State = this.State.Deposit(() => { this.Balance += amount; });
+            if (IsClosed)
+                return;
+            if(this.IsFrozen)
+            {
+                this.IsFrozen = false;
+                this.OnUnfreez();
+            }
+            //deposit money
+            this.Balance += amount;
         }
-
-        // #3 (Interaction): Withdraw was invoked on the State
-        // #4 (Behavior): Result of State.Withdraw is new State
-        // #6 (Behavior): Deposit 1, Verify, Withdraw 1 - Balance == 9
         public void Withdraw(decimal amount)
         {
-            this.State = this.State.Withdraw(() => { this.Balance -= amount; });
+            if (!IsVerified)
+                return;
+
+            if (IsClosed)
+                return;
+
+            if (this.IsFrozen)
+            {
+                this.IsFrozen = false;
+                this.OnUnfreez();
+            }
+            //withdraw money
+            this.Balance -= amount;
         }
 
         public void HolderVerified()
         {
-            this.State = this.State.HolderVerified();
+            this.IsVerified = true;
         }
-
         public void Close()
         {
-            this.State = this.State.Close();
+            this.IsClosed = true;
         }
-
         public void Freeze()
         {
-            this.State = this.State.Freeze();
+            if (IsClosed)
+                return;
+            if (!IsVerified)
+                return;
+
+            this.IsFrozen = true;
         }
 
     }
